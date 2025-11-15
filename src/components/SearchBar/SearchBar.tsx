@@ -34,7 +34,6 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
         <form
           className={styles.form}
           action={(formData: FormData) => searchAction(formData, onSubmit)}
-          method="post"
           aria-label="Search movies form"
         >
           <input
