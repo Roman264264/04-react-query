@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 
@@ -27,6 +27,12 @@ export default function App() {
     placeholderData: (previousData) => previousData,
   });
 
+  useEffect(() => {
+    if (!isFetching && !isError && data && data.results.length === 0) {
+      toast("No movies found for your query");
+    }
+  }, [data, isFetching, isError]);
+
   const handleSearch = (value: string) => {
     if (!value.trim()) {
       toast.error("Please enter a search query");
@@ -47,7 +53,6 @@ export default function App() {
   return (
     <div>
       <Toaster />
-
       <SearchBar onSubmit={handleSearch} />
 
       <main>
@@ -73,7 +78,7 @@ export default function App() {
         />
       )}
 
-      <MovieModal movie={selected} onClose={handleCloseModal} />
+      {selected && <MovieModal movie={selected} onClose={handleCloseModal} />}
     </div>
   );
 }
